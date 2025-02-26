@@ -7,9 +7,8 @@ require (
 	github.com/lmittmann/tint v1.0.6
 	github.com/nerdynz/datastore v1.3.0
 	github.com/nerdynz/security v1.1.2
+	github.com/twitchtv/twirp v8.1.3+incompatible
 	github.com/urfave/negroni v1.0.0
-	golang.org/x/net v0.10.0
-	rogchap.com/v8go v0.9.0
 )
 
 require (
