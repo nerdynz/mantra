@@ -359,7 +359,7 @@ func authenticate(w http.ResponseWriter, req *http.Request, store *datastore.Dat
 		}
 	}
 
-	if authMethod == security.NoAuth {
+	if authMethod == OPEN {
 		fn(w, req, store)
 		return
 	}
