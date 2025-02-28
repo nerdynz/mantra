@@ -251,11 +251,11 @@ type TwirpServer interface {
 
 func (customRouter *CustomRouter) Twirp(twirpserver TwirpServer, securityType AuthMethod) {
 	if securityType == SECURE {
-		customRouter.Mux.Mount(twirpserver.PathPrefix(), WithAuthorization(twirpserver))
+		customRouter.Mux.Handle(twirpserver.PathPrefix(), WithAuthorization(twirpserver))
 	} else {
 		// TODO todo
 
-		customRouter.Mux.Mount(twirpserver.PathPrefix(), twirpserver)
+		customRouter.Mux.Handle(twirpserver.PathPrefix(), twirpserver)
 	}
 }
 
