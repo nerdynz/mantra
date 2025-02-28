@@ -75,7 +75,7 @@ func Router(store *datastore.Datastore) *CustomRouter {
 	customRouter := &CustomRouter{}
 	r := chi.NewRouter()
 	customRouter.Mux = r
-	customRouter.Store = store
+	customRouter.store = store
 	// customRouter.defaultLayout = pageLayout
 	// customRouter.errLayout = errLayout
 
@@ -87,7 +87,7 @@ func Router(store *datastore.Datastore) *CustomRouter {
 type CustomRouter struct {
 	// Router *mux.Router
 	Mux   *chi.Mux
-	Store *datastore.Datastore
+	store *datastore.Datastore
 
 	// defaultLayout templDefaultLayout
 	// errLayout     templErrLayout
@@ -95,7 +95,7 @@ type CustomRouter struct {
 	// AuthHandler func(w http.ResponseWriter, req *http.Request, store *datastore.Datastore, fn CustomHandlerFunc, authMethod string)
 }
 
-type CustomHandlerFunc func(w http.ResponseWriter, req *http.Request, store *datastore.Datastore) error
+type CustomHandlerFunc func(w http.ResponseWriter, req *http.Request, store *datastore.Datastore)
 
 type CustomHandlerFuncTempl func(w http.ResponseWriter, req *http.Request, store *datastore.Datastore) (data any, err error)
 type CustomHandlerFuncJSON func(w http.ResponseWriter, req *http.Request, store *datastore.Datastore) ([]byte, error)
@@ -164,14 +164,7 @@ func (customRouter *CustomRouter) POST(route string, routeFunc CustomHandlerFunc
 
 func (customRouter *CustomRouter) handler(fn CustomHandlerFunc, authMethod AuthMethod) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
-		// req.ParseForm()
-		err := fn(w, req, customRouter.Store)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			w.Write([]byte(err.Error()))
-			// customRouter.errLayout(err).Render(req.Context(), w)
-		}
-		// customRouter.AuthHandler(w, req, flow, customRouter.Store, fn, authMethod)
+		fn(w, req, customRouter.store)
 	}
 }
 
@@ -185,7 +178,7 @@ const (
 
 func (customRouter *CustomRouter) jsonHandler(fn CustomHandlerFuncJSON, authMethod AuthMethod, useLayout bool) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
-		store := customRouter.Store
+		store := customRouter.store
 		ctx := req.Context()
 		ctx = context.WithValue(ctx, "SiteUlid", "01EDG1D97AWN9V0Q87E4SJ13C7")
 		w.Header().Set("Content-Type", "application/json")
