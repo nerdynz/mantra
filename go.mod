@@ -3,7 +3,7 @@ module github.com/nerdynz/mantra
 go 1.23.5
 
 require (
-	github.com/go-zoo/bone v1.3.0
+	github.com/go-chi/chi/v5 v5.2.1
 	github.com/lmittmann/tint v1.0.6
 	github.com/nerdynz/datastore v1.3.0
 	github.com/nerdynz/security v1.1.2

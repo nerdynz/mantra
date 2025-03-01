@@ -11,7 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/go-zoo/bone"
+	"github.com/go-chi/chi/v5"
+
 	"github.com/lmittmann/tint"
 	"github.com/nerdynz/datastore"
 	"github.com/nerdynz/security"
@@ -74,9 +75,7 @@ func (ls *logSlog) Println(v ...any) {
 // type templErrLayout func(err error) templ.Component
 func Router(s *datastore.Datastore) *CustomRouter {
 	customRouter := &CustomRouter{}
-	r := bone.New()
-	r.CaseSensitive = false
-	customRouter.Mux = r
+	customRouter.Mux = chi.NewMux()
 	customRouter.store = s
 	return customRouter
 }
@@ -84,7 +83,7 @@ func Router(s *datastore.Datastore) *CustomRouter {
 // func Router(store *datastore.Datastore) *CustomRouter {
 // 	customRouter := &CustomRouter{}
 // 	r := chi.NewRouter()
-// 	customRouter.Mux = r
+// 	customRouter.M r
 // 	customRouter.store = store
 // 	// customRouter.defaultLayout = pageLayout
 // 	// customRouter.errLayout = errLayout
@@ -95,8 +94,8 @@ func Router(s *datastore.Datastore) *CustomRouter {
 // }
 
 type CustomRouter struct {
-	// Router *mux.Router
-	Mux   *bone.Mux
+	// Router *chi.Mux
+	Mux   *chi.Mux
 	store *datastore.Datastore
 
 	// defaultLayout templDefaultLayout
@@ -120,65 +119,65 @@ type CustomRouter struct {
 // type CustomHandlerFuncJSON func(w http.ResponseWriter, req *http.Request, store *datastore.Datastore) ([]byte, error)
 
 // func (customRouter *CustomRouter) Json(route string, routeFunc CustomHandlerFuncJSON, securityType AuthMethod) {
-// 	customRouter.Mux.Get(route, customRouter.jsonHandler(routeFunc, securityType, true))
+// 	customRouter.Mux(route, customRouter.jsonHandler(routeFunc, securityType, true))
 // }
 
 // // func (customRouter *CustomRouter) Partial(route string, routeFunc CustomHandlerFuncTempl, securityType AuthMethod) {
-// // 	customRouter.Mux.Get(route, customRouter.templhandler(routeFunc, securityType, false))
+// // 	customRouter.Mux(route, customRouter.templhandler(routeFunc, securityType, false))
 // // }
 
 // // func (customRouter *CustomRouter) TemplPost(route string, routeFunc CustomHandlerFuncTempl, securityType AuthMethod) {
-// // 	customRouter.Mux.Post(route, customRouter.templhandler(routeFunc, securityType, true))
+// // 	customRouter.Mux.(route, customRouter.templhandler(routeFunc, securityType, true))
 // // }
 
 // func (customRouter *CustomRouter) GET(route string, routeFunc CustomHandlerFunc, securityType AuthMethod) {
-// 	customRouter.Mux.Get(route, customRouter.handler(routeFunc, securityType))
+// 	customRouter.Mux(route, customRouter.handler(routeFunc, securityType))
 // }
 // func (customRouter *CustomRouter) POST(route string, routeFunc CustomHandlerFunc, securityType AuthMethod) {
-// 	customRouter.Mux.Post(route, customRouter.handler(routeFunc, securityType))
+// 	customRouter.Mux.(route, customRouter.handler(routeFunc, securityType))
 // }
 
 // // POST - Post handler
 // func (customRouter *CustomRouter) POST(route string, routeFunc CustomHandlerFunc, securityType AuthMethod) *bone.Route {
 
-// 	//route = strings.ToLower(route)
-// 	return customRouter.Mux.PostFunc(route, customRouter.handler("POST", routeFunc, securityType))
+// 	//route = strings)
+// 	customRouter.Mux.Post(route, customRouter.handler("POST", routeFunc, securityType))
 // }
 
 // // PST - Post handler with pst for tidier lines
 // func (customRouter *CustomRouter) PST(route string, routeFunc CustomHandlerFunc, securityType AuthMethod) *bone.Route {
-// 	//route = strings.ToLower(route)
-// 	return customRouter.Mux.PostFunc(route, customRouter.handler("POST", routeFunc, securityType))
+// 	//route = strings)
+// 	customRouter.Mux.Post(route, customRouter.handler("POST", routeFunc, securityType))
 // }
 
 // // PUT - Put handler
 // func (customRouter *CustomRouter) PUT(route string, routeFunc CustomHandlerFunc, securityType AuthMethod) *bone.Route {
-// 	//route = strings.ToLower(route)
-// 	return customRouter.Mux.PutFunc(route, customRouter.handler("PUT", routeFunc, securityType))
+// 	//route = strings)
+// 	customRouter.Mux.Put(route, customRouter.handler("PUT", routeFunc, securityType))
 // }
 
 // // PATCH - Patch handler
 // func (customRouter *CustomRouter) PATCH(route string, routeFunc CustomHandlerFunc, securityType AuthMethod) *bone.Route {
-// 	//route = strings.ToLower(route)
-// 	return customRouter.Mux.PatchFunc(route, customRouter.handler("PATCH", routeFunc, securityType))
+// 	//route = strings)
+// 	customRouter.Mux.Patch(route, customRouter.handler("PATCH", routeFunc, securityType))
 // }
 
 // // OPTIONS - Options handler
 // func (customRouter *CustomRouter) OPTIONS(route string, routeFunc CustomHandlerFunc, securityType AuthMethod) *bone.Route {
-// 	//route = strings.ToLower(route)
-// 	return customRouter.Mux.OptionsFunc(route, customRouter.handler("OPTIONS", routeFunc, securityType))
+// 	//route = strings)
+// 	customRouter.Mux.Options(route, customRouter.handler("OPTIONS", routeFunc, securityType))
 // }
 
 // // DELETE - Delete handler
 // func (customRouter *CustomRouter) DELETE(route string, routeFunc CustomHandlerFunc, securityType AuthMethod) *bone.Route {
-// 	//route = strings.ToLower(route)
-// 	return customRouter.Mux.DeleteFunc(route, customRouter.handler("DELETE", routeFunc, securityType))
+// 	//route = strings)
+// 	customRouter.Mux.Delete(route, customRouter.handler("DELETE", routeFunc, securityType))
 // }
 
 // // DEL - Delete handler
 // func (customRouter *CustomRouter) DEL(route string, routeFunc CustomHandlerFunc, securityType AuthMethod) *bone.Route {
-// 	//route = strings.ToLower(route)
-// 	return customRouter.Mux.DeleteFunc(route, customRouter.handler("DELETE", routeFunc, securityType))
+// 	//route = strings)
+// 	customRouter.Mux.Delete(route, customRouter.handler("DELETE", routeFunc, securityType))
 // }
 
 // func (customRouter *CustomRouter) handler(fn CustomHandlerFunc, authMethod AuthMethod) http.HandlerFunc {
@@ -250,12 +249,14 @@ type TwirpServer interface {
 }
 
 func (customRouter *CustomRouter) Twirp(twirpserver TwirpServer, securityType AuthMethod) {
-	if securityType == SECURE {
-		customRouter.Mux.Handle(twirpserver.PathPrefix(), WithAuthorization(twirpserver))
-	} else {
-		// TODO todo
-
+	if securityType == OPEN {
 		customRouter.Mux.Handle(twirpserver.PathPrefix(), twirpserver)
+	} else if securityType == TODO && customRouter.store.Settings.IsDevelopment() {
+		slog.Warn("TODO route set. This will be secured by default in PROD", "route", twirpserver.PathPrefix())
+		customRouter.Mux.Handle(twirpserver.PathPrefix(), twirpserver)
+	} else {
+		// ELSE SHOULD ALWAYS BE AUTH by default.
+		customRouter.Mux.Handle(twirpserver.PathPrefix(), WithAuthorization(twirpserver))
 	}
 }
 
@@ -263,62 +264,52 @@ type CustomHandlerFunc func(w http.ResponseWriter, req *http.Request, store *dat
 
 // // GET - Get handler
 // func (customRouter *CustomRouter) Application(route string, path string) *bone.Route {
-// 	//route = strings.ToLower(route)
-// 	return customRouter.Mux.GetFunc(route, customRouter.appHandler(path))
+// 	//route = strings)
+// 	customRouter.Mux.Get(route, customRouter.appHandler(path))
 // }
 
-func (customRouter *CustomRouter) GET(route string, routeFunc CustomHandlerFunc, securityType AuthMethod) *bone.Route {
-	//route = strings.ToLower(route)
-	return customRouter.Mux.GetFunc(route, customRouter.handler("GET", routeFunc, securityType))
+func (customRouter *CustomRouter) GET(route string, routeFunc CustomHandlerFunc, securityType AuthMethod) {
+	customRouter.Mux.Get(route, customRouter.handler("GET", routeFunc, securityType))
 }
 
 // POST - Post handler
-func (customRouter *CustomRouter) POST(route string, routeFunc CustomHandlerFunc, securityType AuthMethod) *bone.Route {
-
-	//route = strings.ToLower(route)
-	return customRouter.Mux.PostFunc(route, customRouter.handler("POST", routeFunc, securityType))
+func (customRouter *CustomRouter) POST(route string, routeFunc CustomHandlerFunc, securityType AuthMethod) {
+	customRouter.Mux.Post(route, customRouter.handler("POST", routeFunc, securityType))
 }
 
 // PST - Post handler with pst for tidier lines
-func (customRouter *CustomRouter) PST(route string, routeFunc CustomHandlerFunc, securityType AuthMethod) *bone.Route {
-	//route = strings.ToLower(route)
-	return customRouter.Mux.PostFunc(route, customRouter.handler("POST", routeFunc, securityType))
+func (customRouter *CustomRouter) PST(route string, routeFunc CustomHandlerFunc, securityType AuthMethod) {
+	customRouter.Mux.Post(route, customRouter.handler("POST", routeFunc, securityType))
 }
 
 // PUT - Put handler
-func (customRouter *CustomRouter) PUT(route string, routeFunc CustomHandlerFunc, securityType AuthMethod) *bone.Route {
-	//route = strings.ToLower(route)
-	return customRouter.Mux.PutFunc(route, customRouter.handler("PUT", routeFunc, securityType))
+func (customRouter *CustomRouter) PUT(route string, routeFunc CustomHandlerFunc, securityType AuthMethod) {
+	customRouter.Mux.Put(route, customRouter.handler("PUT", routeFunc, securityType))
 }
 
 // PATCH - Patch handler
-func (customRouter *CustomRouter) PATCH(route string, routeFunc CustomHandlerFunc, securityType AuthMethod) *bone.Route {
-	//route = strings.ToLower(route)
-	return customRouter.Mux.PatchFunc(route, customRouter.handler("PATCH", routeFunc, securityType))
+func (customRouter *CustomRouter) PATCH(route string, routeFunc CustomHandlerFunc, securityType AuthMethod) {
+	customRouter.Mux.Patch(route, customRouter.handler("PATCH", routeFunc, securityType))
 }
 
 // OPTIONS - Options handler
-func (customRouter *CustomRouter) OPTIONS(route string, routeFunc CustomHandlerFunc, securityType AuthMethod) *bone.Route {
-	//route = strings.ToLower(route)
-	return customRouter.Mux.OptionsFunc(route, customRouter.handler("OPTIONS", routeFunc, securityType))
+func (customRouter *CustomRouter) OPTIONS(route string, routeFunc CustomHandlerFunc, securityType AuthMethod) {
+	customRouter.Mux.Options(route, customRouter.handler("OPTIONS", routeFunc, securityType))
 }
 
 // DELETE - Delete handler
-func (customRouter *CustomRouter) DELETE(route string, routeFunc CustomHandlerFunc, securityType AuthMethod) *bone.Route {
-	//route = strings.ToLower(route)
-	return customRouter.Mux.DeleteFunc(route, customRouter.handler("DELETE", routeFunc, securityType))
+func (customRouter *CustomRouter) DELETE(route string, routeFunc CustomHandlerFunc, securityType AuthMethod) {
+	customRouter.Mux.Delete(route, customRouter.handler("DELETE", routeFunc, securityType))
 }
 
 // DEL - Delete handler
-func (customRouter *CustomRouter) DEL(route string, routeFunc CustomHandlerFunc, securityType AuthMethod) *bone.Route {
-	//route = strings.ToLower(route)
-	return customRouter.Mux.DeleteFunc(route, customRouter.handler("DELETE", routeFunc, securityType))
+func (customRouter *CustomRouter) DEL(route string, routeFunc CustomHandlerFunc, securityType AuthMethod) {
+	customRouter.Mux.Delete(route, customRouter.handler("DELETE", routeFunc, securityType))
 }
 
 func (customRouter *CustomRouter) handler(reqType string, fn CustomHandlerFunc, authMethod AuthMethod) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		authenticate(w, req, customRouter.store, fn, authMethod)
-		// customRouter.AuthHandler(w, req, flow, customRouter.Store, fn, authMethod)
 	}
 }
 
