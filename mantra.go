@@ -41,6 +41,7 @@ func New(s *datastore.Datastore) *CustomRouter {
 	r.Use(slogchi.New(slog.Default()))
 	r.Use(middleware.Recoverer)
 
+	customRouter.Mux = r
 	customRouter.store = s
 	return customRouter
 }
