@@ -3,10 +3,12 @@ module github.com/nerdynz/mantra
 go 1.23.5
 
 require (
+	github.com/go-chi/chi v1.5.5
 	github.com/go-chi/chi/v5 v5.2.1
 	github.com/lmittmann/tint v1.0.6
 	github.com/nerdynz/datastore v1.3.0
 	github.com/nerdynz/security v1.1.2
+	github.com/samber/slog-chi v1.13.1
 	github.com/twitchtv/twirp v8.1.3+incompatible
 	github.com/urfave/negroni v1.0.0
 )
@@ -19,6 +21,8 @@ require (
 	github.com/jackc/puddle/v2 v2.2.1 // indirect
 	github.com/oklog/ulid/v2 v2.1.0 // indirect
 	github.com/simukti/sqldb-logger v0.0.0-20230108155151-646c1a075551 // indirect
+	go.opentelemetry.io/otel v1.29.0 // indirect
+	go.opentelemetry.io/otel/trace v1.29.0 // indirect
 	golang.org/x/crypto v0.17.0 // indirect
 	golang.org/x/sync v0.10.0 // indirect
 	golang.org/x/sys v0.28.0 // indirect
