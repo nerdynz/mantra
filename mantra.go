@@ -65,21 +65,6 @@ const (
 	OPEN   AuthMethod = "OPEN"
 )
 
-// func (customRouter *CustomRouter) jsonHandler(fn CustomHandlerFuncJSON, authMethod AuthMethod, useLayout bool) http.HandlerFunc {
-// 	return func(w http.ResponseWriter, req *http.Request) {
-// 		store := customRouter.store
-// 		ctx := req.Context()
-// 		ctx = context.WithValue(ctx, "SiteUlid", "01EDG1D97AWN9V0Q87E4SJ13C7")
-// 		w.Header().Set("Content-Type", "application/json")
-// 		json, err := fn(w, req.WithContext(ctx), store)
-// 		if err != nil {
-// 			w.Write([]byte(err.Error()))
-// 			return
-// 		}
-// 		w.Write(json)
-// 	}
-// }
-
 func WithAuthorization(base http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// if slices.Contains(bypassUrls, r.URL.Path) {
