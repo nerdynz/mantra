@@ -6,7 +6,7 @@ require (
 	github.com/go-zoo/bone v1.3.0
 	github.com/lmittmann/tint v1.0.6
 	github.com/nerdynz/datastore v1.3.0
-	github.com/nerdynz/security v1.1.2
+	github.com/nerdynz/security v1.4.0
 	github.com/twitchtv/twirp v8.1.3+incompatible
 	github.com/urfave/negroni v1.0.0
 )
