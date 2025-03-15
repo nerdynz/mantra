@@ -140,13 +140,19 @@ type TwirpServer interface {
 }
 
 func (customRouter *CustomRouter) Twirp(twirpserver TwirpServer, securityType AuthMethod) {
-	if securityType == SECURE {
-		customRouter.Mux.Handle(twirpserver.PathPrefix(), WithAuthorization(twirpserver))
-	} else {
-		// TODO todo
-
+	slog.Info("Twirp", "url registered", twirpserver.PathPrefix())
+	if securityType == OPEN {
 		customRouter.Mux.Handle(twirpserver.PathPrefix(), twirpserver)
+		return
 	}
+
+	if securityType == TODO && customRouter.store.Settings.IsDevelopment() {
+		slog.Warn("Twirp", "URL marked as TODO", twirpserver.PathPrefix())
+		customRouter.Mux.Handle(twirpserver.PathPrefix(), twirpserver)
+		return
+	}
+
+	customRouter.Mux.Handle(twirpserver.PathPrefix(), WithAuthorization(twirpserver))
 }
 
 type CustomHandlerFunc func(w http.ResponseWriter, req *http.Request, store *datastore.Datastore)
