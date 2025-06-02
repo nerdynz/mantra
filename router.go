@@ -4,15 +4,28 @@ import (
 	"context"
 	"log/slog"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/go-zoo/bone"
+	"github.com/lmittmann/tint"
 	"github.com/nerdynz/datastore"
 	"github.com/nerdynz/security"
 	"github.com/twitchtv/twirp"
 	"github.com/urfave/negroni"
 )
+
+func TintedLogger(isDevelopment bool) *slog.Logger {
+	return slog.New(
+		tint.NewHandler(os.Stderr, &tint.Options{
+			Level:      slog.LevelDebug,
+			TimeFormat: time.Kitchen,
+			NoColor:    isDevelopment,
+		}),
+	)
+}
 
 func New(log *slog.Logger) *negroni.Negroni {
 	nL := &negroni.Logger{
