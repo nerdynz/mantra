@@ -36,7 +36,7 @@ func NewViewBucket(w http.ResponseWriter, req *http.Request, store *datastore.Da
 	vb.renderer = render.New(render.Options{
 		Directory:  "templates", // default templates directory
 		Extensions: []string{".html", ".tmpl"},
-		Layout:     "layout", // default layout file
+		Layout:     "", // default layout file
 		Funcs: []template.FuncMap{
 			helperFuncs,
 		},
@@ -53,7 +53,7 @@ func (vb *ViewBucket) Add(key string, value interface{}) {
 }
 
 // HTML renders an HTML template with the current data
-func (vb *ViewBucket) HTML(status int, templateName string) {
+func (vb *ViewBucket) HTML(status int, templateName string, layout ...string) {
 	if vb.renderer == nil {
 		vb.ErrorHTML(http.StatusInternalServerError, "Renderer not set", errors.New("renderer not set"))
 		return
@@ -62,7 +62,13 @@ func (vb *ViewBucket) HTML(status int, templateName string) {
 		vb.ErrorHTML(http.StatusInternalServerError, "Store not set", errors.New("store not set"))
 		return
 	}
-	vb.renderer.HTML(vb.w, status, templateName, vb.data)
+	if len(layout) > 0 {
+		vb.renderer.HTML(vb.w, status, templateName, vb.data, render.HTMLOptions{
+			Layout: layout[0],
+		})
+	} else {
+		vb.renderer.HTML(vb.w, status, templateName, vb.data)
+	}
 }
 
 // Text renders plain text

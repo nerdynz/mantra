@@ -30,6 +30,8 @@ github.com/leekchan/accounting v0.3.1/go.mod h1:3timm6YPhY3YDaGxl0q3eaflX0eoSx3F
 github.com/lib/pq v1.0.0/go.mod h1:5WUZQaWbwv1U+lTReE5YruASi9Al49XbQIvNi/34Woo=
 github.com/lib/pq v1.10.9 h1:YXG7RB+JIjhP29X+OtkiDnYaXQwpS4JEWq7dtCCRUEw=
 github.com/lib/pq v1.10.9/go.mod h1:AlVN5x4E4T544tWzH6hKfbfQvm3HdbOxrmggDNAPY9o=
+github.com/lmittmann/tint v1.1.1 h1:xmmGuinUsCSxWdwH1OqMUQ4tzQsq3BdjJLAAmVKJ9Dw=
+github.com/lmittmann/tint v1.1.1/go.mod h1:HIS3gSy7qNwGCj+5oRjAutErFBl4BzdQP6cJZ0NfMwE=
 github.com/nerdynz/datastore v1.3.0 h1:IqXaYbd/EG2cp/RuuXh6jWwcWRzjq6O2YE+yNKEXNb8=
 github.com/nerdynz/datastore v1.3.0/go.mod h1:GZHySJrVmhj6PNa2YaTrRy7SCgeTDJpHfpf9E/4M2ok=
 github.com/nerdynz/helpers v1.1.1 h1:24p0RCc5bLo7/6I1LVDuJ/FI5GKXZTfRs+Z/q+g9x8E=

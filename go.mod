@@ -4,6 +4,7 @@ go 1.23.6
 
 require (
 	github.com/go-zoo/bone v1.3.0
+	github.com/lmittmann/tint v1.1.1
 	github.com/nerdynz/datastore v1.3.0
 	github.com/nerdynz/helpers v1.1.1
 	github.com/nerdynz/security v1.4.0
