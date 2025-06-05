@@ -17,12 +17,12 @@ import (
 	"github.com/urfave/negroni"
 )
 
-func TintedLogger(isDevelopment bool) *slog.Logger {
+func TintedLogger(colorize bool) *slog.Logger {
 	return slog.New(
 		tint.NewHandler(os.Stderr, &tint.Options{
 			Level:      slog.LevelDebug,
 			TimeFormat: time.Kitchen,
-			NoColor:    isDevelopment,
+			NoColor:    !colorize,
 		}),
 	)
 }
