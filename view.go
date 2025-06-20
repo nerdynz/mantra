@@ -23,6 +23,12 @@ type ViewBucket struct {
 	data     map[string]interface{}
 }
 
+var funcmap = map[string]any{}
+
+func AddTemplateFunc(name string, fn any) {
+	funcmap[name] = fn
+}
+
 // NewViewBucket creates a new ViewBucket instance
 func NewViewBucket(w http.ResponseWriter, req *http.Request, store *datastore.Datastore) *ViewBucket {
 	vb := &ViewBucket{
@@ -39,6 +45,7 @@ func NewViewBucket(w http.ResponseWriter, req *http.Request, store *datastore.Da
 		Layout:     "", // default layout file
 		Funcs: []template.FuncMap{
 			helperFuncs,
+			funcmap,
 		},
 	})
 
