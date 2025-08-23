@@ -218,15 +218,7 @@ func (vb *ViewBucket) Excel(bytes []byte, filename string) {
 	vb.w.Write(bytes)
 }
 
-type PDFParams struct {
-	Delay               int32  `protobuf:"varint,2,opt,name=delay,proto3" json:"delay,omitempty"`
-	JavascriptReadyFlag string `protobuf:"bytes,3,opt,name=javascriptReadyFlag,proto3" json:"javascriptReadyFlag,omitempty"`
-	IsDebug             bool   `protobuf:"varint,4,opt,name=isDebug,proto3" json:"isDebug,omitempty"`
-	IsMarginless        bool   `protobuf:"varint,5,opt,name=isMarginless,proto3" json:"isMarginless,omitempty"`
-	IsLandscape         bool   `protobuf:"varint,6,opt,name=isLandscape,proto3" json:"isLandscape,omitempty"`
-}
-
-func (vb *ViewBucket) Bytes(templateName string, params *PDFParams) (*bytes.Buffer, error) {
+func (vb *ViewBucket) Bytes(templateName string) (*bytes.Buffer, error) {
 	// write to a buffer
 	buf := bytes.NewBuffer(nil)
 	err := vb.renderer.HTML(buf, http.StatusOK, templateName, vb.data)
