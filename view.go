@@ -1,6 +1,7 @@
 package mantra
 
 import (
+	"bytes"
 	"errors"
 	"html/template"
 	"log/slog"
@@ -10,7 +11,9 @@ import (
 	"strings"
 	"time"
 
+	pdf "github.com/SebastiaanKlippert/go-wkhtmltopdf"
 	"github.com/nerdynz/datastore"
+
 	"github.com/unrolled/render"
 )
 
@@ -214,4 +217,76 @@ func (vb *ViewBucket) Excel(bytes []byte, filename string) {
 	vb.w.Header().Set("Content-Disposition", `attachment; filename="`+filename+`"`)
 	vb.w.Header().Set("Content-Length", strconv.Itoa(len(bytes)))
 	vb.w.Write(bytes)
+}
+
+type PDFParams struct {
+	Url                 string `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
+	Delay               int32  `protobuf:"varint,2,opt,name=delay,proto3" json:"delay,omitempty"`
+	JavascriptReadyFlag string `protobuf:"bytes,3,opt,name=javascriptReadyFlag,proto3" json:"javascriptReadyFlag,omitempty"`
+	IsDebug             bool   `protobuf:"varint,4,opt,name=isDebug,proto3" json:"isDebug,omitempty"`
+	IsMarginless        bool   `protobuf:"varint,5,opt,name=isMarginless,proto3" json:"isMarginless,omitempty"`
+	IsLandscape         bool   `protobuf:"varint,6,opt,name=isLandscape,proto3" json:"isLandscape,omitempty"`
+}
+
+func (vb *ViewBucket) TemplatePDF(templateName string, params *PDFParams) {
+	// write to a buffer
+	buf := bytes.NewBuffer(nil)
+	err := vb.renderer.HTML(buf, http.StatusOK, templateName, vb.data)
+	if err != nil {
+		vb.ErrorHTML(http.StatusInternalServerError, "Error rendering template", err)
+		return
+	}
+
+	pdfg, err := pdf.NewPDFGenerator()
+	if err != nil {
+		vb.ErrorHTML(http.StatusInternalServerError, "Error creating PDF generator", err)
+		return
+	}
+
+	pdfg.Dpi.Set(300)
+	pdfg.NoCollate.Set(false)
+	pdfg.PageSize.Set(pdf.PageSizeA4)
+
+	if params.IsMarginless {
+		pdfg.MarginTop.Set(0)
+		pdfg.MarginLeft.Set(0)
+		pdfg.MarginBottom.Set(0)
+		pdfg.MarginRight.Set(0)
+	}
+
+	if params.IsLandscape {
+		pdfg.Orientation.Set("landscape")
+	}
+
+	page := pdf.NewPage(buf.String())
+	if params.IsDebug {
+		page.DebugJavascript.Set(true)
+	}
+
+	readyFlag := params.JavascriptReadyFlag
+	if readyFlag == "" {
+		delay := params.Delay
+		if delay == 0 {
+			page.JavascriptDelay.Set(250)
+		} else {
+			page.JavascriptDelay.Set(uint(delay))
+		}
+	} else {
+		page.WindowStatus.Set(readyFlag)
+	}
+	page.NoStopSlowScripts.Set(true)
+	pdfg.AddPage(page)
+
+	// Create PDF document in internal buffer
+	err = pdfg.Create()
+	if err != nil {
+		vb.ErrorHTML(http.StatusInternalServerError, "Error creating PDF generator", err)
+		return
+	}
+
+	bts := pdfg.Bytes()
+
+	vb.w.Header().Set("Content-Type", "application/PDF")
+	vb.w.Header().Set("Content-Length", strconv.Itoa(len(bts)))
+	vb.w.Write(bts)
 }

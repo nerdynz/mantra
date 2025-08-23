@@ -3,6 +3,7 @@ module github.com/nerdynz/mantra
 go 1.23.6
 
 require (
+	github.com/SebastiaanKlippert/go-wkhtmltopdf v1.9.3
 	github.com/go-zoo/bone v1.3.0
 	github.com/lmittmann/tint v1.1.1
 	github.com/nerdynz/datastore v1.3.0
