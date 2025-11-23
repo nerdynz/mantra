@@ -90,11 +90,21 @@ const (
 	OPEN   AuthMethod = "OPEN"
 )
 
-func WithAuthorization(base http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+func WithAuthorization(base http.Handler, store *datastore.Datastore) http.Handler {
+	return http.TimeoutHandler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
-		auth := r.Header.Get("Authorization")
 
+		reqId := datastore.ULID()
+
+		// request logging
+		slog.Debug("Request", "started with id", reqId)
+		defer func() {
+			slog.Debug("Request", "finished with id", reqId)
+		}()
+
+		ctx = context.WithValue(ctx, "request_id", reqId)
+
+		auth := r.Header.Get("Authorization")
 		padlock, err := security.New(r)
 		if err != nil {
 			twirp.WriteError(w, twirp.NewError(twirp.Unauthenticated, "not logged in"))
@@ -106,7 +116,6 @@ func WithAuthorization(base http.Handler) http.Handler {
 			twirp.WriteError(w, twirp.NewError(twirp.Unauthenticated, "not logged in"))
 			return
 		}
-		ctx = context.WithValue(ctx, "authorization", auth)
 		siteUlid, err := padlock.SiteULID()
 		if err != nil {
 			twirp.WriteError(w, twirp.NewError(twirp.Unauthenticated, err.Error()))
@@ -115,7 +124,7 @@ func WithAuthorization(base http.Handler) http.Handler {
 		ctx = context.WithValue(ctx, "site_ulid", siteUlid)
 		r = r.WithContext(ctx)
 		base.ServeHTTP(w, r)
-	})
+	}), 20*time.Second, "request timed out")
 }
 
 type TwirpServer interface {
@@ -136,7 +145,7 @@ func (customRouter *CustomRouter) Twirp(twirpserver TwirpServer, securityType Au
 		return
 	}
 
-	customRouter.Mux.Handle(twirpserver.PathPrefix(), WithAuthorization(twirpserver))
+	customRouter.Mux.Handle(twirpserver.PathPrefix(), WithAuthorization(twirpserver, customRouter.store))
 }
 
 type CustomHandlerFunc func(w http.ResponseWriter, req *http.Request, store *datastore.Datastore)
