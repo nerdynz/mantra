@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/go-zoo/bone"
-	"github.com/oklog/ulid"
+	"github.com/oklog/ulid/v2"
 )
 
 // ParamSlice gets all values for a parameter as strings

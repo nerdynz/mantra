@@ -8,7 +8,7 @@ require (
 	github.com/nerdynz/datastore v1.3.0
 	github.com/nerdynz/helpers v1.1.1
 	github.com/nerdynz/security v1.4.0
-	github.com/oklog/ulid v1.3.1
+	github.com/oklog/ulid/v2 v2.1.0
 	github.com/twitchtv/twirp v8.1.3+incompatible
 	github.com/unrolled/render v1.7.0
 	github.com/urfave/negroni v1.0.0
@@ -25,7 +25,6 @@ require (
 	github.com/jackc/pgx/v5 v5.6.0 // indirect
 	github.com/jackc/puddle/v2 v2.2.1 // indirect
 	github.com/leekchan/accounting v0.3.1 // indirect
-	github.com/oklog/ulid/v2 v2.1.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/shopspring/decimal v0.0.0-20180709203117-cd690d0c9e24 // indirect
 	github.com/simukti/sqldb-logger v0.0.0-20230108155151-646c1a075551 // indirect
